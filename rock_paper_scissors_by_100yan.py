@@ -5,34 +5,35 @@ import sys, random
 
 def main():
     welcome()
-
+    match_limit = get_round_limit()
     wins = 0
     ties = 0
     losses = 0
 
-    win_rules = {
-        "r": "s",
-        "p": "r",
-        "s": "p"
-    }
-
-    while True:         # the main game loop
+    while wins < match_limit and losses < match_limit:  # the main game loop
         results_tracker(wins, ties, losses)
         player_move = get_player_move()
         player_move_display(player_move)
         computer_move = get_computer_move()
         display_computer_move(computer_move)
+        result = determine_result(player_move, computer_move)
 
-        if player_move == computer_move:
+        if result == "tie":
             ties += 1
             print("It is a tie!")
-        elif win_rules[player_move] == computer_move:
+        elif result == "win":
             wins += 1
             print("You win :)")
         else:
             losses += 1
             print("You lose :(")
 
+    print_separator()
+    if wins == match_limit:
+        print("🎉 You won the match!")
+    else:
+        print("💻 The computer won the match.")
+    print_separator()
 
 def welcome():
     print_separator()
@@ -49,6 +50,44 @@ def results_tracker(wins, ties, losses):
     print(f"************* Wins: {wins} *** Ties: {ties} *** Losses: {losses} *************")
     print_separator()
     print()
+
+
+def determine_result(player_move, computer_move):
+    """
+    Determines the result of RPS round.
+
+    :param player_move: (str) "r", "p", or "s"
+    :param computer_move: (str) "r", "p", or "s"
+    :return: (str) "win", "loss", or "tie"
+    """
+    win_rules = {
+        "r": "s",
+        "p": "r",
+        "s": "p"
+    }
+
+    if player_move == computer_move:
+        return "tie"
+    elif win_rules[player_move] == computer_move:
+        return "win"
+    else:
+        return "loss"
+
+
+def get_round_limit():
+    """
+    Asks the player for the number of wins needed to win the match.
+    :return: (int) number of wins needed
+    """
+    while True:
+        try:
+            round_limit = int(input("Enter number of wins needed to win the match: "))
+            if round_limit > 0:
+                return round_limit
+            else:
+                print("Please enter a positive number.")
+        except ValueError:
+            print("Please enter a valid number.")
 
 
 def instructions():
