@@ -18,22 +18,29 @@ def main():
         display_computer_move(computer_move)
         result = determine_result(player_move, computer_move)
 
+        emojis = {
+            "win": "🏆",
+            "loss": "😢",
+            "tie": "🤝",
+        }
+
         if result == "tie":
             ties += 1
-            print("It is a tie!")
+            print(f"It is a tie! {emojis['tie']}")
         elif result == "win":
             wins += 1
-            print("You win :)")
+            print(f"You win :) {emojis['win']}")
         else:
             losses += 1
-            print("You lose :(")
+            print(f"You lose :( {emojis['loss']}")
 
     print_separator()
     if wins == match_limit:
-        print("🎉 You won the match!")
+        visual_victory()
     else:
-        print("💻 The computer won the match.")
+        visual_loss()
     print_separator()
+
 
 def welcome():
     print_separator()
@@ -158,6 +165,43 @@ def player_move_display(player_move):
         print("PAPER versus...")
     elif player_move == "s":
         print("SCISSORS versus")
+
+
+def visual_victory():
+    """
+    Visualisation of match victory through ASCII art.
+    """
+    print("🏆 CONGRATULATIONS! YOU WON THE MATCH! 🏆")
+    print_separator()
+    print("""
+                  ___________
+                 '._==_==_=_.'
+                 .-\\:      /-.
+                | (|:.     |) |
+                 '-|:.     |-'
+                   \\::.    /
+                    '::. .'
+                      ) (
+                    _.' '._
+                   `"""""""`
+            """)
+
+
+def visual_loss():
+    """
+    Visualisation of match loss through ASCII art.
+    """
+    "💻 The computer won the match."
+    print_separator()
+    print("""
+       __________________
+      |                  |
+      |   COMPUTER WINS  |
+      |                  |
+      |__________________|
+            |      |
+            |______|
+        """)
 
 
 if __name__ == "__main__":
